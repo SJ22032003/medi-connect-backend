@@ -9,9 +9,10 @@ import userRouter from "./routes/user.routes";
 import protect from "./middlewares/auth.middleware";
 import roleRouteAccess from "./middlewares/role_access.middleware";
 import { recieveMessage } from "./controllers/chat.controller";
-import socketConfig from "./config/socket.config";
 
-dotenv.config();
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
 
 // Connect to DB
 connectToDB();
