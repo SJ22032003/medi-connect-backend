@@ -11,7 +11,7 @@ function socketConfig(server: http.Server) {
   const io = new Server(server, {
     cors: {
       methods: ["GET", "POST"],
-      origin: process.env.ALLOWED_ORIGIN,
+      origin: "*",
     },
   });
 
