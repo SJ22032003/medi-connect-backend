@@ -13,7 +13,6 @@ import { recieveMessage } from "./controllers/chat.controller";
 dotenv.config({
   path: `.env.${process.env.NODE_ENV}`,
 });
-
 // Connect to DB
 connectToDB();
 

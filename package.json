@@ -6,8 +6,8 @@
   "scripts": {
     "build": "rm -rf dist && tsc -p .",
     "start": "node ./dist/server.js",
-    "start:staging": " node ./dist/server.js",
-    "server": "NODE_ENV=dev nodemon ./src/server.ts",
+    "start:staging": "node ./dist/server.js",
+    "server": "nodemon ./src/server.ts NODE_ENV=dev",
     "server:staging": "nodemon ./src/server.ts",
     "format": "prettier --write './src/**/*.ts' --config ./.prettierrc && npx eslint --fix ./src/**/*.ts",
     "lint": "npx eslint --fix ./src/**/*.ts"
