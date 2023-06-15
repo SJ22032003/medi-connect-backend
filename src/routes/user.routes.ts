@@ -13,6 +13,7 @@ import {
   newChatWithDoctor,
   getPatientMessageList,
   acceptAppoinmentRequest,
+  doctorsAvailableOnEmergency,
 } from "../controllers/patient.controller";
 import {
   getDoctorMessageList,
@@ -37,6 +38,9 @@ userRouter.route("/patient/new-chat/:dId").patch(newChatWithDoctor);
 
 // @route GET /api/v1//patient/doctor-message-list
 userRouter.route("/patient/doctor-message-list").get(getPatientMessageList);
+
+// @route GET /patient/doctors-available-on-emergency
+userRouter.route("/patient/doctors-available-on-emergency").get(doctorsAvailableOnEmergency);
 
 // ----------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------

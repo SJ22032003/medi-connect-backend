@@ -73,6 +73,7 @@ export interface IDoctor extends Document {
   verified: boolean;
   messageToPatient: IMessageToPatient[];
   appointment: IAppointment[];
+  availableOnEmergency: boolean;
 }
 
 const DoctorSchema = new Schema(
@@ -158,6 +159,10 @@ const DoctorSchema = new Schema(
         model: "Patient",
         select: "name profileImage report",
       },
+    },
+    availableOnEmergency: {
+      type: Boolean,
+      default: false,
     },
   },
   {
