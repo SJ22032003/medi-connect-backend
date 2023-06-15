@@ -402,16 +402,7 @@ const acceptAppoinmentRequest = tryCatch(
 // @route GET /patient/doctors-available-on-emergency
 // @access private
 const doctorsAvailableOnEmergency = tryCatch(async (req: IRequestWithRole, res: IStatusResponse) => {
-  const { id } = req;
-  const { emergency } = req.body;
-
-  if (!emergency) {
-    res.statusCode = 400;
-    throw new Error("Please provide all the details");
-  }
-
-  // UPDATE FOR PATIENT
-  const conditions = { emergency: true };
+  const conditions = { availableOnEmergency: true };
   const attributes = {
     name: 1,
     profileImage: 1,
@@ -427,6 +418,7 @@ const doctorsAvailableOnEmergency = tryCatch(async (req: IRequestWithRole, res: 
   return res.status(200).json({
     status: "success",
     message: "Emergency updated successfully",
+    data: patient,
   });
 });
 
