@@ -18,6 +18,8 @@ const roleRoutes = {
 
   "PATCH::/user/patient/accept-appointment/*": [PATIENT],
 
+  "GET::/user/patient/doctors-available-on-emergency": [PATIENT],
+
   // ----------------------------------------------------------------------------------
   // ----------------------------------------------------------------------------------
 

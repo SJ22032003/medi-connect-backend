@@ -398,6 +398,38 @@ const acceptAppoinmentRequest = tryCatch(
   },
 );
 
+// @desc get all the doctors for patient that are available on emergency
+// @route GET /patient/doctors-available-on-emergency
+// @access private
+const doctorsAvailableOnEmergency = tryCatch(async (req: IRequestWithRole, res: IStatusResponse) => {
+  const { id } = req;
+  const { emergency } = req.body;
+
+  if (!emergency) {
+    res.statusCode = 400;
+    throw new Error("Please provide all the details");
+  }
+
+  // UPDATE FOR PATIENT
+  const conditions = { emergency: true };
+  const attributes = {
+    name: 1,
+    profileImage: 1,
+    speciality: 1,
+    qualification: 1,
+  };
+  const patient = await getDoctorsService(conditions, attributes);
+  if (patient instanceof Error) {
+    res.statusCode = 400;
+    throw patient;
+  }
+
+  return res.status(200).json({
+    status: "success",
+    message: "Emergency updated successfully",
+  });
+});
+
 export {
   loginAsPatient,
   registerAsPatient,
@@ -408,4 +440,5 @@ export {
   newChatWithDoctor,
   getPatientMessageList,
   acceptAppoinmentRequest,
+  doctorsAvailableOnEmergency,
 };
