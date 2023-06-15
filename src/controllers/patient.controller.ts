@@ -267,6 +267,22 @@ const newChatWithDoctor = tryCatch(
     const pId = req.id;
     const roomId = `${pId}-${dId}`;
 
+    // CHECK IF DOCTOR IS IN CHAT
+    const patient = await getOnePatientDetails(
+      { "appointment.doctorId": dId },
+      { appointment: 1, _id: 0 },
+    );
+    if (patient instanceof Error) {
+      res.statusCode = 400;
+      throw patient;
+    }
+    if (patient.appointment.length > 0) {
+      return res.status(200).json({
+        status: "success",
+        message: "Chat initiated successfully",
+      });
+    }
+
     // UPDATE MESSAGE ARRAY
     const patientUpdateBody = {
       $push: {
@@ -401,26 +417,28 @@ const acceptAppoinmentRequest = tryCatch(
 // @desc get all the doctors for patient that are available on emergency
 // @route GET /patient/doctors-available-on-emergency
 // @access private
-const doctorsAvailableOnEmergency = tryCatch(async (req: IRequestWithRole, res: IStatusResponse) => {
-  const conditions = { availableOnEmergency: true };
-  const attributes = {
-    name: 1,
-    profileImage: 1,
-    speciality: 1,
-    qualification: 1,
-  };
-  const patient = await getDoctorsService(conditions, attributes);
-  if (patient instanceof Error) {
-    res.statusCode = 400;
-    throw patient;
-  }
+const doctorsAvailableOnEmergency = tryCatch(
+  async (req: IRequestWithRole, res: IStatusResponse) => {
+    const conditions = { availableOnEmergency: true };
+    const attributes = {
+      name: 1,
+      profileImage: 1,
+      speciality: 1,
+      qualification: 1,
+    };
+    const patient = await getDoctorsService(conditions, attributes);
+    if (patient instanceof Error) {
+      res.statusCode = 400;
+      throw patient;
+    }
 
-  return res.status(200).json({
-    status: "success",
-    message: "Emergency updated successfully",
-    data: patient,
-  });
-});
+    return res.status(200).json({
+      status: "success",
+      message: "Emergency updated successfully",
+      data: patient,
+    });
+  },
+);
 
 export {
   loginAsPatient,
