@@ -243,6 +243,7 @@ const getDoctorsListForPatient = tryCatch(
       _id: 1,
       profileImage: 1,
       qualification: 1,
+      rating: 1,
     });
 
     if (doctorsForPatient instanceof Error) {

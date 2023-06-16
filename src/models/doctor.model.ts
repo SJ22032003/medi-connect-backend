@@ -74,6 +74,7 @@ export interface IDoctor extends Document {
   messageToPatient: IMessageToPatient[];
   appointment: IAppointment[];
   availableOnEmergency: boolean;
+  rating: number;
 }
 
 const DoctorSchema = new Schema(
@@ -164,6 +165,10 @@ const DoctorSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    rating: {
+      type: Number,
+      default: () => generateRating(),
+    },
   },
   {
     timestamps: true,
@@ -173,3 +178,6 @@ const DoctorSchema = new Schema(
 );
 
 export default mongoose.model<IDoctor>("Doctor", DoctorSchema);
+
+// CREATE A RATING FUNCTION THAT RANDOMLY GENERATES A RATING FOR THE DOCTOR BETWEEN 1 AND 5
+const generateRating = () => Math.floor(Math.random() * 5) + 1;
