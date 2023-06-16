@@ -274,8 +274,46 @@ const newChatWithDoctor = tryCatch(
       { messageToDoctor: 1, _id: 0 },
     );
     if (patient instanceof Error) {
-      res.statusCode = 400;
-      throw patient;
+      // UPDATE MESSAGE ARRAY
+      const patientUpdateBody = {
+        $push: {
+          messageToDoctor: {
+            dId,
+            roomId,
+          },
+        },
+      };
+      const doctorUpdateBody = {
+        $push: {
+          messageToPatient: {
+            pId,
+            roomId,
+          },
+        },
+      };
+
+      const updatedPatient = await updatePatientDetailsService(
+        { _id: pId },
+        patientUpdateBody,
+      );
+      if (updatedPatient instanceof Error) {
+        res.statusCode = 400;
+        throw updatedPatient;
+      }
+
+      const updatedDoctor = await updateDoctorDetailsService(
+        { _id: dId },
+        doctorUpdateBody,
+      );
+      if (updatedDoctor instanceof Error) {
+        res.statusCode = 400;
+        throw updatedDoctor;
+      }
+
+      return res.status(200).json({
+        status: "success",
+        message: "Chat initiated successfully",
+      });
     }
     if (patient.messageToDoctor.length > 0) {
       return res.status(200).json({
@@ -283,47 +321,6 @@ const newChatWithDoctor = tryCatch(
         message: "Chat initiated successfully",
       });
     }
-
-    // UPDATE MESSAGE ARRAY
-    const patientUpdateBody = {
-      $push: {
-        messageToDoctor: {
-          dId,
-          roomId,
-        },
-      },
-    };
-    const doctorUpdateBody = {
-      $push: {
-        messageToPatient: {
-          pId,
-          roomId,
-        },
-      },
-    };
-
-    const updatedPatient = await updatePatientDetailsService(
-      { _id: pId },
-      patientUpdateBody,
-    );
-    if (updatedPatient instanceof Error) {
-      res.statusCode = 400;
-      throw updatedPatient;
-    }
-
-    const updatedDoctor = await updateDoctorDetailsService(
-      { _id: dId },
-      doctorUpdateBody,
-    );
-    if (updatedDoctor instanceof Error) {
-      res.statusCode = 400;
-      throw updatedDoctor;
-    }
-
-    return res.status(200).json({
-      status: "success",
-      message: "Chat initiated successfully",
-    });
   },
 );
 
@@ -346,7 +343,6 @@ const getPatientMessageList = tryCatch(
       res.statusCode = 400;
       throw patient;
     }
-
     return res.status(200).json({
       status: "success",
       message: "Patient message list fetched successfully",
