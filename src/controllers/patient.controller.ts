@@ -270,14 +270,14 @@ const newChatWithDoctor = tryCatch(
 
     // CHECK IF DOCTOR IS IN CHAT
     const patient = await getOnePatientDetails(
-      { "appointment.doctorId": dId },
-      { appointment: 1, _id: 0 },
+      { "messageToDoctor.dId": dId },
+      { messageToDoctor: 1, _id: 0 },
     );
     if (patient instanceof Error) {
       res.statusCode = 400;
       throw patient;
     }
-    if (patient.appointment.length > 0) {
+    if (patient.messageToDoctor.length > 0) {
       return res.status(200).json({
         status: "success",
         message: "Chat initiated successfully",
